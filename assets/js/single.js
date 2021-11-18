@@ -5,7 +5,15 @@ var repoNameEl = document.getElementById("repo-name");
 var getRepoName = function (location) {
   var queryString = document.location.search;
   var repoName = queryString.split("=")[1];
-  getRepoIssues(repoName);
+
+  if (repoName) {
+    repoNameEl.textContent = repoName;
+    getRepoIssues(repoName);
+  }
+  else {
+    document.location.replace("./index.html");
+  }
+ 
   repoNameEl.textContent = repoName;
 }
 
@@ -20,13 +28,14 @@ var getRepoIssues = function(repo) {
             displayIssues(data);
           });
         }
-        else {
-          alert("There was a problem with your request!");
-        }
         // check if api has paginated issues
         if (response.headers.get("Link")) {
           displayWarning(repo);
         }
+        else {
+          document.location.replace("./index.html");
+        }
+
       });
       
   };
